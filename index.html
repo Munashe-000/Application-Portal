@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carolina Application Portal Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand-block">
+        <div class="brand-mark">CA</div>
+        <div>
+          <h1>Carolina Application Portal</h1>
+          <p>Demo of a multi-role, multi-stage admissions workflow with POPIA controls</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <h2>2026 Online Application</h2>
+        <p>
+          This mock system demonstrates applicant intake, reviewer segregation, workflow ordering,
+          score aggregation, and audit visibility in a university portal style interface.
+        </p>
+      </div>
+      <div class="hero-login">
+        <h3>Portal Access</h3>
+        <label>Email Address
+          <input type="text" value="reviewer@carolina.org" readonly>
+        </label>
+        <label>Password
+          <input type="text" value="••••••••••" readonly>
+        </label>
+        <button type="button">Sign In</button>
+      </div>
+    </section>
+
+    <nav class="portal-tabs">
+      <button class="tab-button active" data-tab="overview">Overview</button>
+      <button class="tab-button" data-tab="applicant">Applicant Portal</button>
+      <button class="tab-button" data-tab="staff">Staff Dashboard</button>
+      <button class="tab-button" data-tab="compliance">POPIA Controls</button>
+    </nav>
+
+    <section class="tab-panel active" id="overview">
+      <div class="info-grid">
+        <article class="panel">
+          <h3>Workflow Stages</h3>
+          <ol>
+            <li>Eligibility screening and submission</li>
+            <li>Essay review</li>
+            <li>Academic scoring</li>
+            <li>Document verification</li>
+            <li>Shortlisting</li>
+            <li>Interview scoring</li>
+            <li>Final decision and notifications</li>
+          </ol>
+        </article>
+        <article class="panel">
+          <h3>Roles</h3>
+          <ul>
+            <li>Applicant</li>
+            <li>Essay Reviewer</li>
+            <li>Academic Reviewer</li>
+            <li>Document Checker</li>
+            <li>Screener</li>
+            <li>Interview Admin</li>
+            <li>Final Decision Maker</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Key Controls</h3>
+          <ul>
+            <li>Explicit consent capture</li>
+            <li>Strict role-based data visibility</li>
+            <li>Immutable audit logging</li>
+            <li>Encrypted file handling</li>
+            <li>Export and deletion workflows</li>
+          </ul>
+        </article>
+      </div>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h3>Master Scorecard</h3>
+          <p>Ranked automatically from applicant profile and reviewer inputs</p>
+        </div>
+        <div class="table-wrap">
+          <table id="scorecard-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Applicant</th>
+                <th>Experience</th>
+                <th>TEFL</th>
+                <th>Degree</th>
+                <th>Essay</th>
+                <th>Academic</th>
+                <th>Interview</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="applicant">
+      <div class="split-layout">
+        <article class="panel">
+          <h3>Eligibility Questions</h3>
+          <form id="eligibility-form" class="form-stack">
+            <label>Are you legally eligible to participate?
+              <select name="legalEligibility">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </label>
+            <label>Do you hold the minimum required qualification?
+              <select name="qualificationEligibility">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </label>
+            <label>Can you provide all mandatory documents?
+              <select name="documentEligibility">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </label>
+            <button type="submit">Check Eligibility</button>
+          </form>
+          <div id="eligibility-result" class="status-box">
+            If any answer is No, the application is stopped immediately, but an application number is still reserved for reporting.
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3>Consent and Required Documents</h3>
+          <div class="consent-list">
+            <label><input type="checkbox" checked> I consent to the collection and processing of my personal data for this application cycle.</label>
+            <label><input type="checkbox" checked> I understand that only authorized staff may access my information according to their role.</label>
+          </div>
+          <table class="simple-table">
+            <tbody>
+              <tr><td>Transcript</td><td>Required</td></tr>
+              <tr><td>TEFL Certificate</td><td>Required</td></tr>
+              <tr><td>Passport / ID Card</td><td>Required</td></tr>
+              <tr><td>Reference Letter 1</td><td>Required</td></tr>
+              <tr><td>Reference Letter 2</td><td>Required</td></tr>
+              <tr><td>CV / Resume</td><td>Required</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="staff">
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Staff Dashboard</h3>
+            <p id="role-description"></p>
+          </div>
+          <label class="inline-label">Active Role
+            <select id="role-selector"></select>
+          </label>
+        </div>
+      </article>
+
+      <div class="dashboard-grid">
+        <article class="panel">
+          <h3>Applicant Queue</h3>
+          <div id="applicant-queue" class="stack-list"></div>
+        </article>
+        <article class="panel">
+          <h3>Applicant Detail</h3>
+          <div id="applicant-detail" class="stack-list"></div>
+        </article>
+        <article class="panel">
+          <h3>Audit Trail</h3>
+          <div id="audit-log" class="stack-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="compliance">
+      <div class="info-grid">
+        <article class="panel">
+          <h3>Security</h3>
+          <ul>
+            <li>HTTPS everywhere with secure cookies</li>
+            <li>Password hashing using Argon2id or bcrypt</li>
+            <li>Encrypted object storage for documents</li>
+            <li>Short-lived signed file downloads</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Data Subject Rights</h3>
+          <ul>
+            <li>Authenticated export requests</li>
+            <li>Deletion workflow after cycle completion</li>
+            <li>Consent evidence retention</li>
+            <li>Breach notification procedure</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Enforcement</h3>
+          <ul>
+            <li>Policy-based authorization in API</li>
+            <li>Database row-level restrictions where needed</li>
+            <li>Append-only audit tables</li>
+            <li>Stage machine prevents invalid progression</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
