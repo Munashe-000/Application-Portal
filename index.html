@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carolina Application Portal Demo</title>
+  <title>Application Portal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
       <div class="brand-block">
-        <div class="brand-mark">CA</div>
+        <div class="brand-mark">AP</div>
         <div>
-          <h1>Carolina Application Portal</h1>
-          <p>Demo of a multi-role, multi-stage admissions workflow with POPIA controls</p>
+          <h1>Application Portal</h1>
+          <p>Online application and review portal</p>
         </div>
       </div>
     </div>
@@ -24,45 +24,45 @@
       <div class="hero-copy">
         <h2>2026 Online Application</h2>
         <p>
-          This mock system demonstrates applicant intake, reviewer segregation, workflow ordering,
-          score aggregation, and audit visibility in a university portal style interface.
+          Welcome to the online application portal. Applicants can complete their applications here,
+          and review staff can manage each step of the process in one place.
         </p>
       </div>
       <div class="hero-login">
         <h3>Portal Access</h3>
         <label>Email Address
-          <input type="text" value="reviewer@carolina.org" readonly>
+          <input type="text" value="reviewer@applicationportal.org" readonly>
         </label>
         <label>Password
-          <input type="text" value="••••••••••" readonly>
+          <input type="text" value="**********" readonly>
         </label>
         <button type="button">Sign In</button>
       </div>
     </section>
 
     <nav class="portal-tabs">
-      <button class="tab-button active" data-tab="overview">Overview</button>
+      <button class="tab-button active" data-tab="overview">Home</button>
       <button class="tab-button" data-tab="applicant">Applicant Portal</button>
       <button class="tab-button" data-tab="staff">Staff Dashboard</button>
-      <button class="tab-button" data-tab="compliance">POPIA Controls</button>
+      <button class="tab-button" data-tab="compliance">Privacy & Security</button>
     </nav>
 
     <section class="tab-panel active" id="overview">
       <div class="info-grid">
         <article class="panel">
-          <h3>Workflow Stages</h3>
+          <h3>Application Journey</h3>
           <ol>
-            <li>Eligibility screening and submission</li>
+            <li>Eligibility check and application submission</li>
             <li>Essay review</li>
-            <li>Academic scoring</li>
-            <li>Document verification</li>
+            <li>Academic review</li>
+            <li>Document check</li>
             <li>Shortlisting</li>
-            <li>Interview scoring</li>
-            <li>Final decision and notifications</li>
+            <li>Interview stage</li>
+            <li>Final decision and communication</li>
           </ol>
         </article>
         <article class="panel">
-          <h3>Roles</h3>
+          <h3>Review Team</h3>
           <ul>
             <li>Applicant</li>
             <li>Essay Reviewer</li>
@@ -74,21 +74,21 @@
           </ul>
         </article>
         <article class="panel">
-          <h3>Key Controls</h3>
+          <h3>What This Portal Supports</h3>
           <ul>
-            <li>Explicit consent capture</li>
-            <li>Strict role-based data visibility</li>
-            <li>Immutable audit logging</li>
-            <li>Encrypted file handling</li>
-            <li>Export and deletion workflows</li>
+            <li>Clear consent before personal information is submitted</li>
+            <li>Different views for different review roles</li>
+            <li>A full record of important actions</li>
+            <li>Secure handling of uploaded documents</li>
+            <li>Information export and deletion processes</li>
           </ul>
         </article>
       </div>
 
       <article class="panel">
         <div class="panel-header">
-          <h3>Master Scorecard</h3>
-          <p>Ranked automatically from applicant profile and reviewer inputs</p>
+          <h3>Applicant Score Summary</h3>
+          <p>Scores are combined automatically to help staff compare applications fairly</p>
         </div>
         <div class="table-wrap">
           <table id="scorecard-table">
@@ -115,38 +115,38 @@
     <section class="tab-panel" id="applicant">
       <div class="split-layout">
         <article class="panel">
-          <h3>Eligibility Questions</h3>
+          <h3>Before You Apply</h3>
           <form id="eligibility-form" class="form-stack">
-            <label>Are you legally eligible to participate?
+            <label>Are you legally eligible to take part in the programme?
               <select name="legalEligibility">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
             </label>
-            <label>Do you hold the minimum required qualification?
+            <label>Do you meet the minimum qualification requirement?
               <select name="qualificationEligibility">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
             </label>
-            <label>Can you provide all mandatory documents?
+            <label>Are you able to provide all required documents?
               <select name="documentEligibility">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
             </label>
-            <button type="submit">Check Eligibility</button>
+            <button type="submit">Continue</button>
           </form>
           <div id="eligibility-result" class="status-box">
-            If any answer is No, the application is stopped immediately, but an application number is still reserved for reporting.
+            If you answer No to any of these questions, you will not be able to continue with the application. A reference number is still kept for reporting purposes.
           </div>
         </article>
 
         <article class="panel">
-          <h3>Consent and Required Documents</h3>
+          <h3>Your Consent and Documents</h3>
           <div class="consent-list">
-            <label><input type="checkbox" checked> I consent to the collection and processing of my personal data for this application cycle.</label>
-            <label><input type="checkbox" checked> I understand that only authorized staff may access my information according to their role.</label>
+            <label><input type="checkbox" checked> I agree to the collection and use of my personal information for this application process.</label>
+            <label><input type="checkbox" checked> I understand that my information will only be viewed by authorized staff involved in the review process.</label>
           </div>
           <table class="simple-table">
             <tbody>
@@ -169,7 +169,7 @@
             <h3>Staff Dashboard</h3>
             <p id="role-description"></p>
           </div>
-          <label class="inline-label">Active Role
+          <label class="inline-label">Current Role
             <select id="role-selector"></select>
           </label>
         </div>
@@ -177,15 +177,15 @@
 
       <div class="dashboard-grid">
         <article class="panel">
-          <h3>Applicant Queue</h3>
+          <h3>Applications</h3>
           <div id="applicant-queue" class="stack-list"></div>
         </article>
         <article class="panel">
-          <h3>Applicant Detail</h3>
+          <h3>Application Details</h3>
           <div id="applicant-detail" class="stack-list"></div>
         </article>
         <article class="panel">
-          <h3>Audit Trail</h3>
+          <h3>Recent Activity</h3>
           <div id="audit-log" class="stack-list"></div>
         </article>
       </div>
@@ -196,28 +196,28 @@
         <article class="panel">
           <h3>Security</h3>
           <ul>
-            <li>HTTPS everywhere with secure cookies</li>
-            <li>Password hashing using Argon2id or bcrypt</li>
-            <li>Encrypted object storage for documents</li>
-            <li>Short-lived signed file downloads</li>
+            <li>Secure website access with encrypted connections</li>
+            <li>Protected passwords and secure sign-in sessions</li>
+            <li>Encrypted storage for uploaded documents</li>
+            <li>Time-limited access to downloaded files</li>
           </ul>
         </article>
         <article class="panel">
-          <h3>Data Subject Rights</h3>
+          <h3>Your Information</h3>
           <ul>
-            <li>Authenticated export requests</li>
-            <li>Deletion workflow after cycle completion</li>
-            <li>Consent evidence retention</li>
-            <li>Breach notification procedure</li>
+            <li>Requests to download your information</li>
+            <li>Removal of personal information after the cycle where appropriate</li>
+            <li>Record of the consent you provided</li>
+            <li>Notification procedures if a data incident occurs</li>
           </ul>
         </article>
         <article class="panel">
-          <h3>Enforcement</h3>
+          <h3>Access Rules</h3>
           <ul>
-            <li>Policy-based authorization in API</li>
-            <li>Database row-level restrictions where needed</li>
-            <li>Append-only audit tables</li>
-            <li>Stage machine prevents invalid progression</li>
+            <li>Staff only see the information they need for their role</li>
+            <li>Extra database restrictions are applied where needed</li>
+            <li>Important actions are recorded and kept safe from editing</li>
+            <li>Each application must move through the correct review order</li>
           </ul>
         </article>
       </div>
