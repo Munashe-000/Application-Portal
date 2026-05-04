@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Portal Technical Requirements</title>
+  <link rel="stylesheet" href="common.css">
+</head>
+<body>
+  <section class="page cover">
+    <div>
+      <div class="cover-band"></div>
+      <p class="doc-kicker">Proposal Documentation</p>
+      <h1 class="cover-title">Technical Requirements Specification</h1>
+      <p class="cover-subtitle">
+        Sample specification for the proposed application portal based on the current demo,
+        stakeholder workflow requirements, and the expected production operating model.
+      </p>
+      <table class="cover-meta">
+        <tr><td><strong>Project</strong></td><td>Application Portal</td></tr>
+        <tr><td><strong>Document Type</strong></td><td>Technical Requirements</td></tr>
+        <tr><td><strong>Revision</strong></td><td>Draft v1.0</td></tr>
+        <tr><td><strong>Date</strong></td><td>29 April 2026</td></tr>
+      </table>
+    </div>
+    <div class="footer-note">
+      This specification is intended for stakeholder review and planning. Final production details should be confirmed during discovery.
+    </div>
+  </section>
+
+  <section class="page">
+    <p class="doc-kicker">Requirements</p>
+    <h1 class="doc-title">1. Purpose and Scope</h1>
+    <div class="section">
+      <p>
+        The system will support an annual application programme that includes applicant registration,
+        eligibility screening, document submission, multi-stage review, comparative scoring, interview
+        scoring, final decisions, and applicant communications.
+      </p>
+      <h2>2. In Scope</h2>
+      <ul>
+        <li>Applicant-facing portal with required forms and document upload</li>
+        <li>Multi-role staff dashboard with workflow-gated access</li>
+        <li>Essay, academic, document, shortlisting, interview, and final decision stages</li>
+        <li>Master scorecard with ranking and export capability</li>
+        <li>Audit logging, encryption, data export, and deletion workflows</li>
+      </ul>
+      <h2>3. Out of Scope for Initial Demo</h2>
+      <ul>
+        <li>Production authentication integration</li>
+        <li>Live payment processing</li>
+        <li>External student information system integration</li>
+        <li>Bulk data migration from legacy platforms</li>
+      </ul>
+    </div>
+    <div class="page-num">Page 2</div>
+  </section>
+
+  <section class="page">
+    <p class="doc-kicker">Requirements</p>
+    <h1 class="doc-title">4. Functional Requirements</h1>
+    <div class="section">
+      <h2>4.1 Applicant Portal</h2>
+      <table class="table">
+        <tr><th>ID</th><th>Requirement</th></tr>
+        <tr><td>FR-01</td><td>The system shall present three initial eligibility questions before the main application form.</td></tr>
+        <tr><td>FR-02</td><td>If any eligibility answer is negative, the system shall stop the application flow and display a clear ineligibility message.</td></tr>
+        <tr><td>FR-03</td><td>The system shall reserve an application reference number even for ineligible submissions for reporting purposes.</td></tr>
+        <tr><td>FR-04</td><td>The system shall capture explicit consent before personal information is submitted.</td></tr>
+        <tr><td>FR-05</td><td>The system shall require upload of mandatory supporting documents before final submission.</td></tr>
+        <tr><td>FR-06</td><td>The system shall prevent duplicate active submissions for the same applicant within the same cycle.</td></tr>
+      </table>
+    </div>
+    <div class="section">
+      <h2>4.2 Review Workflow</h2>
+      <table class="table">
+        <tr><th>ID</th><th>Requirement</th></tr>
+        <tr><td>FR-07</td><td>Essay reviewers shall score essays without visibility into academic results or peer reviewer scores.</td></tr>
+        <tr><td>FR-08</td><td>Academic reviewers shall capture subject marks and the system shall calculate the average automatically.</td></tr>
+        <tr><td>FR-09</td><td>Document checkers shall record required document completeness and issue notes.</td></tr>
+        <tr><td>FR-10</td><td>Screeners shall access aggregated score and checklist views only after prior stages are complete.</td></tr>
+        <tr><td>FR-11</td><td>Interview admins shall capture manual interview scores and notes for shortlisted applicants.</td></tr>
+        <tr><td>FR-12</td><td>Final decision makers shall assign Approved, Rejected, or Standby outcomes.</td></tr>
+      </table>
+    </div>
+    <div class="page-num">Page 3</div>
+  </section>
+
+  <section class="page">
+    <p class="doc-kicker">Requirements</p>
+    <h1 class="doc-title">5. Workflow and Data Rules</h1>
+    <div class="section">
+      <h2>5.1 Workflow Enforcement</h2>
+      <ul>
+        <li>The system shall enforce ordered stage progression.</li>
+        <li>The system shall prevent shortlisting until essay review, academic scoring, and document verification are complete.</li>
+        <li>The system shall prevent interview scoring unless the applicant has been shortlisted.</li>
+        <li>The system shall prevent final decision completion until interview scoring is complete where required.</li>
+      </ul>
+      <h2>5.2 Scorecard Rules</h2>
+      <ul>
+        <li>Teaching experience scoring shall be rule-driven, for example 3+ years = 5 points, 1-2 years = 3 points, under 1 year = 1 point.</li>
+        <li>TEFL and degree presence shall contribute binary points as configured.</li>
+        <li>Essay and interview scores shall be pulled from role-owned scoring records.</li>
+        <li>The system shall calculate total score automatically and rank applicants by score.</li>
+        <li>The system shall support filtering and spreadsheet export of scorecard data.</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>6. Role and Permission Requirements</h2>
+      <table class="table">
+        <tr><th>ID</th><th>Requirement</th></tr>
+        <tr><td>PR-01</td><td>Every user shall be assigned one or more roles and all access shall be policy-controlled.</td></tr>
+        <tr><td>PR-02</td><td>The API shall enforce role permissions independently of the user interface.</td></tr>
+        <tr><td>PR-03</td><td>Users shall view only the applicant fields required for their role.</td></tr>
+        <tr><td>PR-04</td><td>Reviewer scores from other users shall remain hidden until authorized senior stages.</td></tr>
+        <tr><td>PR-05</td><td>Administrative actions affecting roles or permissions shall be fully audited.</td></tr>
+      </table>
+    </div>
+    <div class="page-num">Page 4</div>
+  </section>
+
+  <section class="page">
+    <p class="doc-kicker">Requirements</p>
+    <h1 class="doc-title">7. Security, POPIA, and Operations</h1>
+    <div class="section">
+      <h2>7.1 POPIA and Security Requirements</h2>
+      <table class="table">
+        <tr><th>ID</th><th>Requirement</th></tr>
+        <tr><td>SR-01</td><td>All personal data shall be encrypted in transit and at rest.</td></tr>
+        <tr><td>SR-02</td><td>The system shall maintain an immutable audit trail of access and changes.</td></tr>
+        <tr><td>SR-03</td><td>The system shall support applicant data export requests.</td></tr>
+        <tr><td>SR-04</td><td>The system shall support deletion or anonymization workflows after the application cycle, subject to retention policy.</td></tr>
+        <tr><td>SR-05</td><td>The system shall support breach response and notification procedures.</td></tr>
+        <tr><td>SR-06</td><td>Passwords shall be stored using secure hashing such as Argon2id or bcrypt.</td></tr>
+        <tr><td>SR-07</td><td>Sessions shall expire after inactivity and shall be rotated on sensitive events.</td></tr>
+        <tr><td>SR-08</td><td>The application shall be delivered over HTTPS only.</td></tr>
+      </table>
+    </div>
+    <div class="section">
+      <h2>7.2 Audit Logging</h2>
+      <p>Audit records shall capture, at minimum:</p>
+      <ul>
+        <li>actor user ID and active role</li>
+        <li>target entity or application ID</li>
+        <li>action performed</li>
+        <li>timestamp in UTC</li>
+        <li>before and after change summary where applicable</li>
+        <li>IP address, user agent, and correlation ID</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2>8. Non-Functional Requirements</h2>
+      <table class="table">
+        <tr><th>Category</th><th>Requirement</th></tr>
+        <tr><td>Availability</td><td>The platform should be available throughout the application cycle with planned maintenance windows communicated in advance.</td></tr>
+        <tr><td>Performance</td><td>Normal page loads should remain responsive under expected seasonal usage and staff review operations.</td></tr>
+        <tr><td>Scalability</td><td>The solution should scale to support increased applicant volume without redesign of the workflow model.</td></tr>
+        <tr><td>Maintainability</td><td>The codebase shall use a layered architecture and version-controlled migrations.</td></tr>
+        <tr><td>Observability</td><td>The system shall emit structured logs, alerts, and job status information for support and incident response.</td></tr>
+      </table>
+    </div>
+    <div class="page-num">Page 5</div>
+  </section>
+
+  <section class="page">
+    <p class="doc-kicker">Requirements</p>
+    <h1 class="doc-title">9. Suggested Technical Stack</h1>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Application Stack</h3>
+        <ul>
+          <li>Frontend: Next.js or a .NET-aligned web front end</li>
+          <li>Backend: ASP.NET Core Web API on .NET 8</li>
+          <li>Database: PostgreSQL</li>
+          <li>Background processing: hosted services or job runner</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>AWS Services</h3>
+        <ul>
+          <li>CloudFront and WAF</li>
+          <li>App Runner or ECS Fargate</li>
+          <li>RDS PostgreSQL</li>
+          <li>S3, KMS, SES, CloudWatch</li>
+        </ul>
+      </div>
+    </div>
+    <div class="section">
+      <h2>10. Deliverables</h2>
+      <ul>
+        <li>source code repositories</li>
+        <li>database schema and migrations</li>
+        <li>deployment instructions</li>
+        <li>administrator and user manuals</li>
+        <li>security and architecture documentation</li>
+      </ul>
+      <p class="footer-note">
+        This document is intended as a formal sample requirements specification aligned with the current proposal stage.
+      </p>
+    </div>
+    <div class="page-num">Page 6</div>
+  </section>
+</body>
+</html>
