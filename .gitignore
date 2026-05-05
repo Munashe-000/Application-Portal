@@ -1,0 +1,4 @@
+.chrome-devtools-profile-*/
+.chrome-print-profile/
+*.pdf
+!docs/*.pdf
