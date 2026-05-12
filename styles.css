@@ -224,6 +224,61 @@ select {
   gap: 10px;
 }
 
+.action-panel {
+  margin-top: 14px;
+  border: 1px solid #d5dbe3;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.action-panel h4 {
+  margin: 0 0 10px;
+  color: #123b6d;
+}
+
+.action-panel .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.action-panel .row.single {
+  grid-template-columns: 1fr;
+}
+
+.action-panel button {
+  margin-top: 8px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #d5dbe3;
+  background: #f8fafc;
+  color: #1f2937;
+}
+
+.pill.good {
+  border-color: #9cc8a4;
+  background: #edf7ef;
+  color: #1e5d2b;
+}
+
+.pill.warn {
+  border-color: #d9b44a;
+  background: #fff7e2;
+  color: #6b4a00;
+}
+
+.pill.bad {
+  border-color: #d9a5a5;
+  background: #fdf0f0;
+  color: #8a1f1f;
+}
+
 .list-item {
   border: 1px solid #d5dbe3;
   background: #f8fafc;

@@ -147,10 +147,10 @@ A fixed monthly maintenance fee is recommended for ongoing monitoring, security 
 
 ## Recommendation for Stakeholder Proposal
 
-Use these numbers in the proposal (South African Rand, including VAT and POPIA implementation):
+Use these numbers in the proposal (South African Rand, including VAT and POPIA technical controls):
 
-- **Development Build (Total):** `R120,000 to R130,000`
-- **Monthly Hosting:** `R2,000 to R5,200` (depending on scale)
-- **Fixed Maintenance:** `R4,500 / month`
+- **Development Build (Total):** `R300,000` (fixed, incl. VAT)
+- **Monthly Hosting:** `R2,000 to R5,200` (depending on scale; billed at cost)
+- **Fixed Maintenance:** `R4,500 / month` (incl. VAT; bug fixes included)
 
 That is realistic enough for early stakeholder approval and ensures all compliance and support needs are met without hidden costs for developer errors.

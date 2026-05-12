@@ -104,6 +104,7 @@ const roleSelector = document.getElementById("role-selector");
 const roleDescription = document.getElementById("role-description");
 const applicantQueue = document.getElementById("applicant-queue");
 const applicantDetail = document.getElementById("applicant-detail");
+const roleActions = document.getElementById("role-actions");
 const auditLog = document.getElementById("audit-log");
 const scorecardBody = document.querySelector("#scorecard-table tbody");
 const tabs = document.querySelectorAll(".tab-button");
@@ -113,6 +114,25 @@ const eligibilityResult = document.getElementById("eligibility-result");
 
 let currentRole = "essay";
 let currentApplicantId = applicants[0].id;
+
+function nowStamp() {
+  const date = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function pushAudit(actor, action, applicantId) {
+  auditEvents.unshift(`${nowStamp()} | ${actor} | ${action} | ${applicantId}`);
+  if (auditEvents.length > 12) auditEvents.length = 12;
+}
+
+function isReadyForShortlist(applicant) {
+  return applicant.documentsComplete && applicant.essayScore !== null && applicant.academicAverage !== null;
+}
+
+function isReadyForFinal(applicant) {
+  return applicant.interviewScore !== null && applicant.essayScore !== null && applicant.academicAverage !== null;
+}
 
 function experiencePoints(years) {
   if (years >= 3) return 5;
@@ -194,6 +214,7 @@ function renderDetail() {
   const applicant = applicants.find((entry) => entry.id === currentApplicantId);
   if (!applicant) {
     applicantDetail.innerHTML = "<div class='list-item'>No applicants available for this role.</div>";
+    if (roleActions) roleActions.innerHTML = "";
     return;
   }
 
@@ -234,10 +255,127 @@ function renderDetail() {
   }
 
   applicantDetail.innerHTML = rows.join("");
+  renderActions(applicant);
 }
 
 function renderAuditLog() {
   auditLog.innerHTML = auditEvents.map((entry) => `<div class="list-item">${entry}</div>`).join("");
+}
+
+function renderActions(applicant) {
+  if (!roleActions) return;
+
+  const stagePills = [];
+  stagePills.push(applicant.essayScore !== null ? `<span class="pill good">Essay: done</span>` : `<span class="pill warn">Essay: pending</span>`);
+  stagePills.push(applicant.academicAverage !== null ? `<span class="pill good">Academics: done</span>` : `<span class="pill warn">Academics: pending</span>`);
+  stagePills.push(applicant.documentsComplete ? `<span class="pill good">Docs: verified</span>` : `<span class="pill bad">Docs: incomplete</span>`);
+  stagePills.push(applicant.status === "Shortlisted" || applicant.status === "Interviewed" ? `<span class="pill good">Shortlist: yes</span>` : `<span class="pill warn">Shortlist: no</span>`);
+  stagePills.push(applicant.interviewScore !== null ? `<span class="pill good">Interview: done</span>` : `<span class="pill warn">Interview: pending</span>`);
+
+  const header = `
+    <h4>Actions (Mock)</h4>
+    <div class="muted">This panel simulates stage enforcement, role visibility, and audit logging.</div>
+    <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px;">${stagePills.join("")}</div>
+  `;
+
+  if (currentRole === "essay") {
+    const disabled = applicant.status === "EligibilityFailed" || applicant.status === "Draft";
+    roleActions.innerHTML = header + `
+      <div class="row">
+        <label>Essay score (0 - 10)
+          <input id="essay-score" type="number" min="0" max="10" step="0.1" value="${applicant.essayScore ?? ""}" ${disabled ? "disabled" : ""}>
+        </label>
+        <div>
+          <div class="muted">Visibility: academic scores and other reviewers’ inputs are hidden in this role.</div>
+          <button type="button" data-action="save-essay" ${disabled ? "disabled" : ""}>Save Essay Score</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentRole === "academic") {
+    const disabled = applicant.status === "EligibilityFailed" || applicant.status === "Draft";
+    roleActions.innerHTML = header + `
+      <div class="row">
+        <label>Academic average (auto / mock)
+          <input id="academic-avg" type="number" min="0" max="100" step="0.01" value="${applicant.academicAverage ?? ""}" ${disabled ? "disabled" : ""}>
+        </label>
+        <div>
+          <div class="muted">Visibility: essay notes and peer scores are hidden in this role.</div>
+          <button type="button" data-action="save-academic" ${disabled ? "disabled" : ""}>Save Academic Average</button>
+        </div>
+      </div>
+      <div class="muted">In the production build, this is captured as per-subject grades with an audited calculation.</div>
+    `;
+    return;
+  }
+
+  if (currentRole === "docs") {
+    roleActions.innerHTML = header + `
+      <div class="row single">
+        <div class="muted">Mandatory documents must be present before verification is accepted.</div>
+        <button type="button" data-action="toggle-docs">${applicant.documentsComplete ? "Mark as Incomplete (Mock)" : "Mark as Verified (Mock)"}</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentRole === "screener") {
+    const ready = isReadyForShortlist(applicant);
+    roleActions.innerHTML = header + `
+      <div class="row single">
+        <div>Shortlisting allowed: ${ready ? "<span class='pill good'>Yes</span>" : "<span class='pill bad'>No</span>"}</div>
+        <button type="button" data-action="shortlist" ${ready ? "" : "disabled"}>Mark as Shortlisted</button>
+        <button type="button" data-action="not-shortlist">Mark as Not Shortlisted</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentRole === "interview") {
+    const disabled = applicant.status !== "Shortlisted" && applicant.status !== "Interviewed";
+    roleActions.innerHTML = header + `
+      <div class="row">
+        <label>Interview score (0 - 10)
+          <input id="interview-score" type="number" min="0" max="10" step="0.1" value="${applicant.interviewScore ?? ""}" ${disabled ? "disabled" : ""}>
+        </label>
+        <div>
+          <div class="muted">Rule: only shortlisted applicants can be scored for interview.</div>
+          <button type="button" data-action="save-interview" ${disabled ? "disabled" : ""}>Save Interview Score</button>
+        </div>
+      </div>
+      <div class="muted">In the production build, this is a multi-field scoring sheet with an audited average.</div>
+    `;
+    return;
+  }
+
+  if (currentRole === "final") {
+    const canFinalize = isReadyForFinal(applicant);
+    roleActions.innerHTML = header + `
+      <div class="row">
+        <label>Final decision
+          <select id="final-decision" ${canFinalize ? "" : "disabled"}>
+            <option value="">Select...</option>
+            <option value="Approved" ${applicant.finalDecision === "Approved" ? "selected" : ""}>Approved</option>
+            <option value="Rejected" ${applicant.finalDecision === "Rejected" ? "selected" : ""}>Rejected</option>
+            <option value="Standby" ${applicant.finalDecision === "Standby" ? "selected" : ""}>Standby</option>
+          </select>
+        </label>
+        <div>
+          <div class="muted">Finalisation allowed only once essay, academics, and interview are complete.</div>
+          <button type="button" data-action="save-final" ${canFinalize ? "" : "disabled"}>Save Final Decision</button>
+        </div>
+      </div>
+      <div class="row single">
+        <button type="button" data-action="mock-emails" ${applicant.finalDecision ? "" : "disabled"}>Generate Result Emails (Mock)</button>
+        <div class="muted">Approved: Accept/Reject form. Standby: “I agree / I disagree” standby form request.</div>
+      </div>
+    `;
+    return;
+  }
+
+  roleActions.innerHTML = header + `<div class="muted">Select a role to see relevant actions.</div>`;
 }
 
 tabs.forEach((tab) => {
@@ -262,6 +400,89 @@ applicantQueue.addEventListener("click", (event) => {
   currentApplicantId = target.dataset.id;
   renderQueue();
   renderDetail();
+});
+
+roleActions?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-action]");
+  if (!button) return;
+
+  const action = button.dataset.action;
+  const applicant = applicants.find((entry) => entry.id === currentApplicantId);
+  if (!applicant) return;
+
+  const actorId = {
+    essay: "essay-reviewer",
+    academic: "academic-reviewer",
+    docs: "document-checker",
+    screener: "screener",
+    interview: "interview-admin",
+    final: "final-decision"
+  }[currentRole] ?? "staff";
+
+  if (action === "save-essay") {
+    const value = Number(document.getElementById("essay-score")?.value);
+    if (Number.isFinite(value)) {
+      applicant.essayScore = Math.max(0, Math.min(10, value));
+      if (applicant.status === "Submitted") applicant.status = "Essay Review";
+      pushAudit(actorId, "Essay score saved", applicant.id);
+    }
+  }
+
+  if (action === "save-academic") {
+    const value = Number(document.getElementById("academic-avg")?.value);
+    if (Number.isFinite(value)) {
+      applicant.academicAverage = Math.max(0, Math.min(100, value));
+      pushAudit(actorId, "Transcript scoring updated", applicant.id);
+    }
+  }
+
+  if (action === "toggle-docs") {
+    applicant.documentsComplete = !applicant.documentsComplete;
+    applicant.missingDocuments = applicant.documentsComplete ? [] : ["TEFL Certificate", "Reference Letter 2"];
+    pushAudit(actorId, applicant.documentsComplete ? "Document checklist verified" : "Document checklist flagged", applicant.id);
+  }
+
+  if (action === "shortlist") {
+    if (isReadyForShortlist(applicant)) {
+      applicant.status = "Shortlisted";
+      pushAudit(actorId, "Shortlisting decision applied (Shortlisted)", applicant.id);
+    }
+  }
+
+  if (action === "not-shortlist") {
+    applicant.status = "Not Shortlisted";
+    pushAudit(actorId, "Shortlisting decision applied (Not Shortlisted)", applicant.id);
+  }
+
+  if (action === "save-interview") {
+    const value = Number(document.getElementById("interview-score")?.value);
+    if (Number.isFinite(value) && (applicant.status === "Shortlisted" || applicant.status === "Interviewed")) {
+      applicant.interviewScore = Math.max(0, Math.min(10, value));
+      applicant.status = "Interviewed";
+      pushAudit(actorId, "Interview score submitted", applicant.id);
+    }
+  }
+
+  if (action === "save-final") {
+    const value = document.getElementById("final-decision")?.value;
+    if (value && isReadyForFinal(applicant)) {
+      applicant.finalDecision = value;
+      applicant.status = `Final: ${value}`;
+      pushAudit(actorId, `Final decision saved (${value})`, applicant.id);
+    }
+  }
+
+  if (action === "mock-emails") {
+    if (applicant.finalDecision) {
+      pushAudit(actorId, `Result emails generated (${applicant.finalDecision})`, applicant.id);
+      alert(`Mock emails generated for ${applicant.name} (${applicant.finalDecision}).`);
+    }
+  }
+
+  renderQueue();
+  renderDetail();
+  renderScorecard();
+  renderAuditLog();
 });
 
 eligibilityForm.addEventListener("submit", (event) => {

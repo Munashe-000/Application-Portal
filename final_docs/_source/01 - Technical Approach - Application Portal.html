@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01 - Technical Approach - Application Portal</title>
+    <link rel="stylesheet" href="template.css" />
+  </head>
+  <body>
+    <section class="header">
+      <div class="kicker">Munashe Muganiwa</div>
+      <h1>Technical Approach</h1>
+      <div class="meta">
+        <div><strong>Project:</strong> Application Portal (South Africa)</div>
+        <div><strong>Date:</strong> 12 May 2026</div>
+        <div><strong>Peak Applicants (estimate):</strong> 500+</div>
+        <div><strong>Staff Users (estimate):</strong> ~5 concurrent</div>
+      </div>
+      <div class="accent"></div>
+    </section>
+
+    <h2>1) Alignment to Latest Feedback</h2>
+    <ul>
+      <li><strong>POPIA Officer:</strong> Governance, enforcement, and training handled by the client’s POPIA/compliance officer. Our scope covers the full technical POPIA controls.</li>
+      <li><strong>Target usage window:</strong> Applicants typically start using the portal <strong>mid-September</strong>. Admin training and final handover must occur before the opening window.</li>
+      <li><strong>Load expectation:</strong> The brief indicates <strong>500+ applicants</strong>, with a staff review team of about <strong>5 users</strong>.</li>
+    </ul>
+
+    <h2>2) Proposed Architecture & Tech Stack</h2>
+    <div class="two-col avoid-break">
+      <div class="callout">
+        <h3>Application Stack (recommended)</h3>
+        <ul>
+          <li><strong>Frontend:</strong> Next.js (TypeScript)</li>
+          <li><strong>Backend API:</strong> .NET 8 (ASP.NET Core Web API)</li>
+          <li><strong>Database:</strong> PostgreSQL</li>
+          <li><strong>File storage:</strong> S3 / Blob storage with encryption</li>
+          <li><strong>Identity:</strong> Cognito / Azure AD B2C / ASP.NET Identity</li>
+          <li><strong>Email:</strong> SES / SendGrid equivalent</li>
+          <li><strong>Monitoring:</strong> Centralized logs + alerts</li>
+        </ul>
+      </div>
+      <div class="callout">
+        <h3>Why this stack fits</h3>
+        <ul>
+          <li>Well-suited for workflow enforcement and strict authorization.</li>
+          <li>Strong auditability for stage-by-stage scoring and decision trails.</li>
+          <li>Secure document handling via managed encryption primitives.</li>
+          <li>Predictable scaling for seasonal load and burst traffic.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Backend Architecture (Revised Questions)</h2>
+    <h3>Role-based access control (RBAC)</h3>
+    <ul>
+      <li>Policy-based authorization per role and capability (server-enforced on every endpoint).</li>
+      <li>Role separation ensures each reviewer sees only relevant data (e.g. essay reviewers cannot see academic scoring or other reviewers’ scores).</li>
+    </ul>
+
+    <h3>Workflow state machine</h3>
+    <ul>
+      <li>Strict stage ordering is enforced (no shortlisting before essay + academics + document verification are complete).</li>
+      <li>Interview scoring allowed only once an applicant is shortlisted.</li>
+      <li>Final decisions allowed only after required prior stages are complete.</li>
+    </ul>
+
+    <h3>Race condition prevention</h3>
+    <ul>
+      <li>Optimistic concurrency controls on core records.</li>
+      <li>Stage assignment/locking rules to avoid two staff members scoring the same applicant at the same time.</li>
+      <li>Unique constraints to prevent duplicate scoring records.</li>
+      <li>Idempotency patterns for sensitive actions (submission/export) to prevent duplicates.</li>
+    </ul>
+
+    <h2>4) POPIA Technical Controls (From Day One)</h2>
+    <div class="callout">
+      <ul>
+        <li><strong>Encryption in transit:</strong> HTTPS everywhere, HSTS, secure cookie/session handling.</li>
+        <li><strong>Encryption at rest:</strong> Encrypted database storage, encrypted document storage, and managed keys.</li>
+        <li><strong>Consent:</strong> Explicit consent capture stored with timestamp and policy version.</li>
+        <li><strong>Audit logging:</strong> Who did what, when, from where, and what changed (append-only, restricted access).</li>
+        <li><strong>Data export:</strong> Applicant export as a generated package with time-limited access; fully audited.</li>
+        <li><strong>Deletion & retention:</strong> Policy-driven deletion/anonymisation after the cycle (with legally necessary audit retention).</li>
+        <li><strong>Breach readiness:</strong> Logging + alerting, plus an incident runbook for the compliance officer’s procedures.</li>
+      </ul>
+    </div>
+
+    <h2>5) Master Scorecard (Critical Component)</h2>
+    <p>
+      A comparative scoring dashboard ranks applicants by total score, supports filtering, and exports to Excel.
+      It pulls stage scores (essay, academics, interview) and auto-calculates rule-based points (e.g. experience, TEFL, degree),
+      while enforcing role-based visibility so only authorized roles see consolidated totals at the correct stage.
+    </p>
+
+    <h2>6) Handover Deliverables</h2>
+    <ul>
+      <li>Source code and repository handover</li>
+      <li>Database schema + migrations</li>
+      <li>Deployment guide + environment variable list</li>
+      <li>Admin/staff user guide</li>
+      <li>Technical runbook (monitoring, backups, incident basics)</li>
+      <li>Training session for staff users (and/or recorded walkthrough)</li>
+    </ul>
+  </body>
+</html>

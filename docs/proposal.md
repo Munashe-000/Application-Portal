@@ -248,17 +248,11 @@ Estimated effort:
 
 ### Full Production Build
 
-Realistic estimate for the complete system:
+Realistic estimate for the complete system (based on the updated multi-role workflow and POPIA requirements):
 
-- `12 to 16 weeks`
+- **`10 to 12 weeks`** with a dedicated team of **3 experienced developers**
 
-That assumes:
-
-- one developer lead
-- one UI pass
-- no major external integrations beyond email/storage/auth
-- stakeholder feedback cycles are reasonably fast
-- `8 to 10 weeks`
+This timeline includes build + security hardening + client UAT + handover and training.
 
 ### Team Composition
 
@@ -276,8 +270,11 @@ The timeline assumes a dedicated team of **3 experienced developers** working in
 5. **Week 5:** Academic scoring engine, average calculations, and document verification.
 6. **Week 6:** Master scorecard, ranking, and shortlist controls.
 7. **Week 7:** Interview forms, final decision flow, and audit event hardening.
-8. **Week 8:** Data export/deletion, security review, UAT, and production handover.
-9. **Weeks 9 to 10:** Contingency for stakeholder revisions, load testing, and final training.
+8. **Week 8:** Interview forms, final decision flow, and notification email workflows.
+9. **Week 9:** Data export/deletion, audit trail hardening, and compliance readiness checks.
+10. **Week 10:** End-to-end testing, security review, performance smoke testing, and client UAT.
+11. **Week 11:** Production deployment, monitoring/alerts, and operational runbook.
+12. **Week 12:** Final handover, documentation pack, and staff training (with buffer).
 
 ## Cost Positioning
 
@@ -291,6 +288,12 @@ For proposal discussion, the clean summary is:
 - seasonal annual infrastructure: around `$1,000 to $4,200/year`
 
 These are early planning ranges, not final quotes. The main cost swing factors are RDS sizing, high availability choice, storage retained between cycles, and traffic volume.
+
+For the commercial proposal pack, the fixed pricing summary is:
+
+- **Development build:** `R300,000` (incl. VAT) including POPIA technical controls from day one
+- **Maintenance:** `R4,500 / month` (incl. VAT), bug fixes included
+- **Hosting:** billed at cost (estimated range provided in cost breakdown)
 
 ## Handover
 
